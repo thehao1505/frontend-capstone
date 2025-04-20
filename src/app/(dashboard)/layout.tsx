@@ -1,5 +1,4 @@
-import { Navbar } from './navbar';
-import { Sidebar } from './sidebar';
+import { Sidebar } from '../../features/dashboard/components/sidebar';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -11,7 +10,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <Sidebar />
       <div className='flex flex-col h-full items-center'>
         <div className='flex flex-col w-[640px] items-center justify-center'>
-          <Navbar />
           {children}
         </div>
       </div>

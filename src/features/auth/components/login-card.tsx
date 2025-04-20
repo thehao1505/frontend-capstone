@@ -39,12 +39,12 @@ export const LoginCard = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
         loginData
       );
 
       if (response.status === 201) {
-        const token = response.data.accessToken;
+        const token = response.data.token.accessToken;
         setCookie(null, 'token', token, { path: '/' });
       }
 
