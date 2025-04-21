@@ -88,7 +88,7 @@ export default function CreatePostModal({ currentUser }: { currentUser: User | n
 
       {showPopup && (
         <Modal
-          title='Thread mới'
+          title='New Thread'
           isOpen={showPopup}
           onClose={() => setShowPopup(false)}
         >

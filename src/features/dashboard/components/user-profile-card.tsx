@@ -12,6 +12,7 @@ import { FeedCardProfile } from './feed-card-profile';
 import { useCallback, useEffect, useState, useTransition } from 'react';
 import { cn } from '@/lib/utils';
 import axiosInstance from '@/lib/axios';
+import EditProfileCard from './edit-profile-card';
 
 export const UserProfileCard = () => {
   const params = useParams();
@@ -136,12 +137,10 @@ export const UserProfileCard = () => {
           </div>
           <div className='flex items-center justify-between gap-x-3 w-full px-6 py-3'>
             {userProfile.user?._id === currentUser?._id ? (
-              <Button
-                variant='ghost'
-                className='text-white font-semibold rounded-lg w-full border border-neutral-800'
-              >
-                Edit Profile
-              </Button>
+              <EditProfileCard
+                currentUser={currentUser}
+                onProfileUpdated={fetchUserProfile}
+              />
             ) : (
               <>
                 <Button
