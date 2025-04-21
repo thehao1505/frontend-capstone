@@ -5,10 +5,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import clsx from "clsx";
 import { formatDistanceToNow } from "date-fns";
 import { motion } from "framer-motion";
-import { Heart, Send } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useState, useTransition, useEffect } from "react";
 import CommentButton from "./comment-modal";
 import { useRouter } from 'next/navigation';
+import ShareButton from "./share-button";
 
 interface Author {
   _id: string;
@@ -39,7 +40,8 @@ export const PostCard = ({ currentUser, ...post }: PostCardProps) => {
 
   useEffect(() => {
     setLiked(post.likes.includes(currentUser || ''));
-  }, [liked, currentUser, post])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser])
 
   useEffect(() => {
     setFormattedDate(formatDistanceToNow(new Date(post.createdAt), {
@@ -145,10 +147,7 @@ export const PostCard = ({ currentUser, ...post }: PostCardProps) => {
                 <span>{likeCount}</span>
               </button>
               <CommentButton postId={post._id} currentUser={currentUser} />
-              <button className='flex items-center gap-1 hover:text-neutral-400'>
-                <Send className='w-4 h-4' />
-                <span>Share</span>
-              </button>
+              <ShareButton link={`${window.location.origin}/${post.author.username}/post/${post._id}`} />
             </div>
           </div>
         </div>

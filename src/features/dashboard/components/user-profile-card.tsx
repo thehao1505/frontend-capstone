@@ -3,7 +3,7 @@
 import { Navbar } from '@/features/dashboard/components/navbar';
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import useUser from '../hook/useUser';
-import { notFound, useParams } from 'next/navigation';
+import { notFound, useParams, useRouter } from 'next/navigation';
 import { ChartNoAxesCombined, Instagram } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CreatePostModal from './create-post-modal';
@@ -19,6 +19,7 @@ export const UserProfileCard = () => {
   const { currentUser } = useCurrentUser();
   const [isPending, startTransition] = useTransition();
   const [followersCounts, setFollowersCounts] = useState<number>(0);
+  const router = useRouter();
   const [isFollowed, setIsFollowed] = useState<boolean>(() => {
     if (!userProfile.user?._id || !currentUser?._id) return false;
     return (
@@ -71,6 +72,10 @@ export const UserProfileCard = () => {
         console.error('Toggle like failed:', err);
       }
     })
+  }
+
+  const handleMessageClick = () => {
+    router.push(`/messages/${userProfile.user?._id}`);
   }
 
   if (userProfile.error) {
@@ -153,6 +158,7 @@ export const UserProfileCard = () => {
                   {isFollowed ? 'Following' : 'Follow'}
                 </Button>
                 <Button
+                  onClick={handleMessageClick}
                   variant='ghost'
                   className='text-white font-semibold rounded-lg flex-1 border border-neutral-800'
                 >

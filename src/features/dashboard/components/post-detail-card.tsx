@@ -5,12 +5,13 @@ import { Comment, Post } from '@/features/types';
 import axiosInstance from '@/lib/axios';
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import { formatDistanceToNow } from 'date-fns';
-import { ChevronRight, Heart, MessageCircle, Send } from 'lucide-react';
+import { ChevronRight, Heart, MessageCircle } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useState, useTransition } from 'react';
 import clsx from 'clsx';
 import useCurrentUser from '../hook/useCurrentUser';
 import { CommentCard } from './comment-card';
+import ShareButton from './share-button';
 
 export const PostDetailCard = () => {
   const [liked, setLiked] = useState(false);
@@ -150,10 +151,7 @@ export const PostDetailCard = () => {
                 <MessageCircle className='w-4 h-4' />
                 <span>{commentCount}</span>
               </button>
-              <button className='flex items-center gap-1 hover:text-neutral-400'>
-                <Send className='w-4 h-4' />
-                <span>Share</span>
-              </button>
+              <ShareButton />
             </div>
             <div className='flex flex-row items-center justify-between py-4'>
               <p className='text-sm text-white font-semibold'>Most related</p>
@@ -165,7 +163,11 @@ export const PostDetailCard = () => {
           </div>
         </div>
         {comment.map((comment) => (
-          <CommentCard key={comment._id} comment={comment} currentUser={currentUser?._id || null}/>
+          <CommentCard
+            key={comment._id}
+            comment={comment}
+            currentUser={currentUser?._id || null}
+          />
         ))}
       </div>
     </>

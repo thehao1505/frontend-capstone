@@ -2,14 +2,14 @@
 
 import { Comment } from "@/features/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Heart, Send } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import clsx from "clsx";
 import { useState, useTransition } from "react";
 import CommentChildButton from "./comment-child-card";
 import { useRouter } from 'next/navigation';
- 
 import axiosInstance from "@/lib/axios";
+import ShareButton from "./share-button";
 
 export const CommentCard = ({ comment, currentUser }: { comment: Comment, currentUser: string | null}) => {
   const [liked, setLiked] = useState(comment.likes.includes(currentUser || ''));
@@ -96,10 +96,7 @@ export const CommentCard = ({ comment, currentUser }: { comment: Comment, curren
               currentUser={currentUser}
               parentId={comment._id}
             />
-            <button className='flex items-center gap-1 hover:text-neutral-400'>
-              <Send className='w-4 h-4' />
-              <span>Share</span>
-            </button>
+            <ShareButton />
           </div>
         </div>
       </div>
