@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { User } from "@/features/types";
 import axiosInstance from "@/lib/axios";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface UserDetails {
   _id: string;
@@ -42,6 +42,33 @@ export default function EditProfileCard({
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [avatar, setAvatar] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsLoading(true);
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    const formData = new FormData();
+    files.forEach((file) => formData.append('files', file));
+
+    try {
+      const res = await axiosInstance.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/upload/multiple`,
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      );
+
+      setAvatar(res.data[0]);
+    } catch (err) {
+      console.error('Upload error:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const fetchUserDetails = useCallback(async () => {
     try {
@@ -80,6 +107,7 @@ export default function EditProfileCard({
           firstName: userDetails.firstName,
           lastName: userDetails.lastName,
           shortDescription: userDetails.shortDescription,
+          avatar: avatar,
         }
       );
       setShowPopup(false);
@@ -134,9 +162,19 @@ export default function EditProfileCard({
               <Button
                 variant='ghost'
                 className='font-semibold rounded-lg w-full border bg-white text-black border-neutral-800 hover:bg-black hover:text-white'
+                onClick={() => imageInputRef.current?.click()}
+                disabled={isLoading}
               >
                 Change Avatar
               </Button>
+              <input
+                type='file'
+                multiple
+                accept='image/*'
+                ref={imageInputRef}
+                onChange={handleImageChange}
+                className='hidden'
+              />
             </div>
           </div>
           <div className='space-y-4 text-white'>
