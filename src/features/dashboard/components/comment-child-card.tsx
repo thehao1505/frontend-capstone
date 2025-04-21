@@ -42,10 +42,6 @@ export default function CommentChildButton({
       const res = await axiosInstance.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comment?postId=${postId}&parentId=${parentId}`
       );
-      console.log(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comment?postId=${postId}&parentId=${parentId}`
-      );
-      console.log('res', res.data)
       setComments(res.data);
 
       const dates: Record<string, string> = {};
@@ -67,7 +63,7 @@ export default function CommentChildButton({
 
   const handleSubmit = async () => {
     try {
-      const res = await axiosInstance.post(
+      await axiosInstance.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comment`,
         {
           parentId,
@@ -76,7 +72,6 @@ export default function CommentChildButton({
           userId: currentUser,
         }
       );
-      console.log(res.data)
       setContent('');
       fetchComments();
     } catch (err) {

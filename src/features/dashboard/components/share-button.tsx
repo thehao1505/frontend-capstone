@@ -11,8 +11,6 @@ export default function ShareButton({ link }: { link?: string}) {
     setIsClicked(true);
     setTimeout(() => setIsClicked(false), 200);
 
-    console.log(typeof window, navigator.clipboard, link);
-
     try {
       if (typeof window !== 'undefined' && navigator.clipboard) {
         await navigator.clipboard.writeText(link || window.location.href);
