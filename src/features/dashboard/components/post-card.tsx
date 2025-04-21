@@ -38,6 +38,10 @@ export const PostCard = ({ currentUser, ...post }: PostCardProps) => {
   const router = useRouter();
 
   useEffect(() => {
+    setLiked(post.likes.includes(currentUser || ''));
+  }, [liked, currentUser, post])
+
+  useEffect(() => {
     setFormattedDate(formatDistanceToNow(new Date(post.createdAt), {
       addSuffix: true,
     }));
