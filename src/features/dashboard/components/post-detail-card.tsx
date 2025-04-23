@@ -6,7 +6,7 @@ import axiosInstance from '@/lib/axios';
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import { formatDistanceToNow } from 'date-fns';
 import { ChevronRight, Heart, MessageCircle } from 'lucide-react';
-import { useParams } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { useCallback, useEffect, useState, useTransition } from 'react';
 import clsx from 'clsx';
 import useCurrentUser from '../hook/useCurrentUser';
@@ -24,6 +24,10 @@ export const PostDetailCard = () => {
   const { currentUser } = useCurrentUser();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [formattedDate, setFormattedDate] = useState('');
+
+  if (!params.postId || params.postId === 'undefined') {
+    notFound();
+  }
 
   useEffect(() => {
     if (post?.createdAt) {

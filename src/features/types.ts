@@ -38,3 +38,15 @@ export interface Comment {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Notification {
+  _id: string;
+  type: 'FOLLOW' | 'LIKE' | 'COMMENT' | 'COMMENT_REPLY';
+  message: string;
+  senderId: User;
+  recipientId: string;
+  postId?: Post;
+  commentId?: Comment;
+  read: boolean;
+  createdAt: string;
+};

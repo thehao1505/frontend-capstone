@@ -47,7 +47,7 @@ export const MessageCard = () => {
     setCurrentUserId(currentUser?._id || null)
   }, [currentUser])
 
-  const fetchMessages = async (
+  const fetchMessages = useCallback(async (
     page: number,
     limit: number
   ) => {
@@ -59,7 +59,7 @@ export const MessageCard = () => {
     } catch (error) {
       console.log(error)
     }
-  };
+  }, []);
 
   const loadOlderMessages = async () => {
     if (isLoadingMore || !hasMore) return;
