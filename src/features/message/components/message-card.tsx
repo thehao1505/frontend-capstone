@@ -150,7 +150,9 @@ export const MessageCard = () => {
               <div
                 key={idx}
                 className={`flex ${
-                  msg.sender._id === currentUserId ? 'justify-end' : 'justify-start'
+                  msg.sender._id === currentUserId
+                    ? 'justify-end'
+                    : 'justify-start'
                 }`}
               >
                 <div
@@ -172,7 +174,12 @@ export const MessageCard = () => {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder='Type a message...'
-              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
               minRows={1}
               maxRows={20}
               className='flex-1 px-3 rounded-2xl resize-none border border-neutral-700 focus:outline-none focus:ring-0 p-2 mr-3 text-white placeholder:text-muted-foreground'
