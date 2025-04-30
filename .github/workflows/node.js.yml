@@ -42,4 +42,4 @@ jobs:
 
     - name: Start or reload app with PM2
       run: |
-        npx pm2 start npm --name "next-app" -- start || npx pm2 reload next-app
+        npx pm2 restart nextjs-app || npx pm2 start npm --name "nextjs-app" -- start
