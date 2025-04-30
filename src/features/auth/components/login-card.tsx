@@ -85,8 +85,8 @@ export const LoginCard = () => {
               onChange={(e) =>
                 setLoginData({ ...loginData, email: e.target.value })
               }
-              placeholder='Email'
-              type='email'
+              placeholder='Email or Username'
+              type='text'
               required
             />
             <Input
