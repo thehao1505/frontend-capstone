@@ -80,7 +80,7 @@ export const ForgotPasswordCard = () => {
               gap-x-2 text-sm text-destructive mb-6'
               >
                 <TriangleAlert className='size-4' />
-                <p>Invalid email or password</p>
+                <p>Invalid email</p>
               </div>
             )}
             <CardContent className='space-y-5 px-0 pb-0'>
@@ -104,7 +104,7 @@ export const ForgotPasswordCard = () => {
               <Separator />
               <p className='text-xs text-muted-foreground'>
                 Don&apos;t have an account?
-                <Link href='/sign-up'>
+                <Link href='/login'>
                   <span className='text-sky-700 hover:underline'> Sign up</span>
                 </Link>
               </p>
