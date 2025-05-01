@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useRef, useState } from "react";
 import { User } from "../../types";
-import { Images, MapPin, Paperclip, Smile, Text } from "lucide-react";
+import { Images, MapPin, Paperclip, Smile, Text, TriangleAlert } from "lucide-react";
 import TextareaAutosize from 'react-textarea-autosize';
 import axiosInstance from "@/lib/axios";
 
@@ -14,6 +14,7 @@ export default function CreatePostModal({ currentUser }: { currentUser: User | n
   const [showPopup, setShowPopup] = useState(false);
   const [images, setImages] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>('');
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleImageChange = async (
@@ -42,12 +43,16 @@ export default function CreatePostModal({ currentUser }: { currentUser: User | n
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      await axiosInstance.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/posts`, {
-        content,
-        images,
-      });
-
-      setShowPopup(false);
+      if (content.length === 0 && images.length === 0) {
+        setError('Please enter some content or add an image');
+      } else {
+        await axiosInstance.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/posts`, {
+          content,
+          images,
+        });
+  
+        setShowPopup(false);
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -93,6 +98,14 @@ export default function CreatePostModal({ currentUser }: { currentUser: User | n
           onClose={() => setShowPopup(false)}
         >
           <div className='text-sm text-neutral-200'>
+            {!!error && (
+              <div
+                className='bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6'
+              >
+                <TriangleAlert className='size-4' />
+                <p>Please enter some content or add an image</p>
+              </div>
+            )}
             <div className='flex flex-row items-start gap-3 w-full border-b-[1px] border-neutral-800'>
               <Avatar className='w-9 h-9 rounded-full overflow-hidden'>
                 <AvatarImage
