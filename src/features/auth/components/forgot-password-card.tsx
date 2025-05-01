@@ -105,7 +105,7 @@ export const ForgotPasswordCard = () => {
               <p className='text-xs text-muted-foreground'>
                 Don&apos;t have an account?
                 <Link href='/login'>
-                  <span className='text-sky-700 hover:underline'> Sign up</span>
+                  <span className='text-sky-700 hover:underline'> Login</span>
                 </Link>
               </p>
             </CardContent>
