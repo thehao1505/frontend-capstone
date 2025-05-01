@@ -19,6 +19,7 @@ import { Separator } from '@/components/ui/separator';
 import { TriangleAlert } from 'lucide-react';
 
 interface SignUpData {
+  username: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -29,6 +30,7 @@ interface SignUpData {
 export const SignUpCard = () => {
 
   const [signUpData, setSignUpData] = useState<SignUpData>({
+    username: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -60,7 +62,7 @@ export const SignUpCard = () => {
       );
 
       if (response.status === 201) {
-        const token = response.data.accessToken;
+        const token = response.data.token.accessToken;
         setCookie(null, 'token', token, { path: '/' });
       }
 
@@ -97,6 +99,16 @@ export const SignUpCard = () => {
         )}
         <CardContent className='space-y-5 px-0 pb-0'>
           <form onSubmit={onCredentialsSignUp} className='space-y-2.5'>
+            <Input
+              disabled={isLoading}
+              value={signUpData.username}
+              onChange={(e) =>
+                setSignUpData({ ...signUpData, username: e.target.value })
+              }
+              placeholder='Username'
+              type='text'
+              required
+            />
             <Input
               disabled={isLoading}
               value={signUpData.firstName}

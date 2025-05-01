@@ -17,15 +17,16 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { TriangleAlert } from 'lucide-react';
 import axios from 'axios';
+import { isEmail } from '@/lib/utils';
 
 interface LoginData {
-  email: string;
+  emailOrUsername: string;
   password: string;
 }
 
 export const LoginCard = () => {
   const [loginData, setLoginData] = useState<LoginData>({
-    email: '',
+    emailOrUsername: '',
     password: '',
   });
   const [error, setError] = useState<string>('');
@@ -38,9 +39,14 @@ export const LoginCard = () => {
     setIsLoading(true);
 
     try {
+      const payload = isEmail(loginData.emailOrUsername)
+        ? { email: loginData.emailOrUsername, password: loginData.password }
+        : { username: loginData.emailOrUsername, password: loginData.password };
+
+
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
-        loginData
+        payload
       );
 
       if (response.status === 201) {
@@ -81,9 +87,9 @@ export const LoginCard = () => {
         <CardContent className='space-y-5 px-0 pb-0'>
           <form onSubmit={onCredentialsSignIn} className='space-y-2 5'>
             <Input
-              value={loginData.email}
+              value={loginData.emailOrUsername}
               onChange={(e) =>
-                setLoginData({ ...loginData, email: e.target.value })
+                setLoginData({ ...loginData, emailOrUsername: e.target.value })
               }
               placeholder='Email or Username'
               type='text'
@@ -110,7 +116,9 @@ export const LoginCard = () => {
           <Separator />
           <p className='text-xs text-muted-foreground mb-2'>
             <Link href='/forgot-password'>
-              <span className='text-sky-700 hover:underline'>Forgot password?</span>
+              <span className='text-sky-700 hover:underline'>
+                Forgot password?
+              </span>
             </Link>
           </p>
           <p className='text-xs text-muted-foreground'>
