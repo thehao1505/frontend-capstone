@@ -22,8 +22,8 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
   const path = request.nextUrl.pathname;
 
-  const protectedRoutes = ['/', '/profile'];
-  const authRoutes = ['/login', '/sign-up'];
+  const protectedRoutes = ['/', '/profile', '/messages', '/notifications'];
+  const authRoutes = ['/login', '/sign-up', '/reset-password', '/forgot-password'];
 
   const isAuthenticated = token && (await verifyToken(token));
   
