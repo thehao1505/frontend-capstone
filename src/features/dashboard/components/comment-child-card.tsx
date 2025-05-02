@@ -1,6 +1,6 @@
 'use client';
 
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, TriangleAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import axiosInstance from '@/lib/axios';
 import Modal from '@/components/modal';
@@ -33,6 +33,7 @@ export default function CommentChildButton({
   const [showPopup, setShowPopup] = useState(false);
   const [content, setContent] = useState('');
   const [comments, setComments] = useState<Comment[]>([]);
+  const [error, setError] = useState<string>('');
   const [formattedDates, setFormattedDates] = useState<Record<string, string>>(
     {}
   );
@@ -63,6 +64,10 @@ export default function CommentChildButton({
 
   const handleSubmit = async () => {
     try {
+      if (content.length === 0) {
+        setError('Please enter some content');
+        return;
+      }
       await axiosInstance.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comment`,
         {
@@ -95,6 +100,12 @@ export default function CommentChildButton({
           isOpen={showPopup}
           onClose={() => setShowPopup(false)}
         >
+          {!!error && (
+            <div className='bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6'>
+              <TriangleAlert className='size-4' />
+              <p>Please don&apos;t leave the comment empty</p>
+            </div>
+          )}
           <div className='space-y-2 max-h-64 overflow-y-auto mb-4'>
             {comments.map((c) => (
               <div key={c._id} className='text-sm text-neutral-200 pt-2'>

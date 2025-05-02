@@ -171,6 +171,7 @@ export const PostDetailCard = () => {
             key={comment._id}
             comment={comment}
             currentUser={currentUser?._id || null}
+            postId={post?._id || ''}
           />
         ))}
       </div>

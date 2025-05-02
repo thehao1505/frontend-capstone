@@ -1,6 +1,6 @@
 'use client';
 
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, TriangleAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import axiosInstance from '@/lib/axios';
 import Modal from '@/components/modal';
@@ -25,6 +25,7 @@ export default function CommentButton({ postId, currentUser }: { postId: string 
   const [showPopup, setShowPopup] = useState(false);
   const [content, setContent] = useState('');
   const [comments, setComments] = useState<Comment[]>([]);
+  const [error, setError] = useState<string>('');
   const [formattedDates, setFormattedDates] = useState<Record<string, string>>({});
 
   const fetchComments = async () => {
@@ -53,6 +54,10 @@ export default function CommentButton({ postId, currentUser }: { postId: string 
 
   const handleSubmit = async () => {
     try {
+      if (content.length === 0) {
+        setError('Please enter some content');
+        return;
+      }
       await axiosInstance.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comment`,
         {
@@ -79,8 +84,18 @@ export default function CommentButton({ postId, currentUser }: { postId: string 
       </button>
 
       {showPopup && (
-        <Modal title='New Comment Reply' isOpen={showPopup} onClose={() => setShowPopup(false)}>
+        <Modal
+          title='New Comment Reply'
+          isOpen={showPopup}
+          onClose={() => setShowPopup(false)}
+        >
           <div className='space-y-2 max-h-64 overflow-y-auto mb-4'>
+            {!!error && (
+              <div className='bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6'>
+                <TriangleAlert className='size-4' />
+                <p>Please don&apos;t leave the comment empty</p>
+              </div>
+            )}
             {comments.map((c) => (
               <div key={c._id} className='text-sm text-neutral-200'>
                 <div className='flex flex-row items-start gap-3 w-full'>
@@ -98,8 +113,7 @@ export default function CommentButton({ postId, currentUser }: { postId: string 
                     <div className='flex items-center text-sm gap-1 font-medium text-white'>
                       <span>{c.userId.username}</span>
                       <span className='text-xs text-muted-foreground'>
-                        •{' '}
-                        {formattedDates[c._id] || ''}
+                        • {formattedDates[c._id] || ''}
                       </span>
                     </div>
                     <p>{c.content}</p>
