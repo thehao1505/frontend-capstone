@@ -37,7 +37,6 @@ export const NotificationCard = () => {
       const res = await axiosInstance.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/notifications?page=${page}&limit=10`
       );
-      console.log(res.data)
       return res.data || [];
     } catch (error) {
       console.log(error)
@@ -104,8 +103,8 @@ export const NotificationCard = () => {
         <div className='flex flex-col h-full pt-6'>
           {notifications.map((notification) => (
             <NotificationLabel
-            key={notification._id}
-            notification={notification}
+              key={notification._id}
+              notification={notification}
             />
           ))}
           {notifications.length === 0 && (

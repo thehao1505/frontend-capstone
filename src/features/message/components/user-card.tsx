@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { User } from "../../types"
 import { useRouter } from "next/navigation";
 
-export const UserCard = ({ connection }: { connection : User}) => {
+export const UserCard = ({ connection, text }: { connection : User, text?: string}) => {
   const router = useRouter()
 
   const handleClick = () => {
@@ -29,7 +29,7 @@ export const UserCard = ({ connection }: { connection : User}) => {
           {connection.username}
         </span>
         <span className='text-xs text-muted-foreground cursor-pointer hover:underline'>
-          Tap to chat
+          {text || 'Tap to chat'}
         </span>
       </div>
     </div>
